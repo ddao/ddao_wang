@@ -1,0 +1,34 @@
+clone_depth: 5
+
+environment:
+    access_token:
+        secure: 3++jRuYmJBpGwnbjYbPY3YBEOATzLAg3qtzNf1iakKBBENzRJFGnEA76Mk3oxaF5
+install:
+    - node --version
+    - npm --version
+    - npm install
+    - npm install hexo-cli -g
+    
+build_script:
+    - hexo generate
+    
+artifacts:
+    - path: public
+    
+on_success:
+    - git config --global credential.helper store
+    - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:access_token):x-oauth-basic@github.com`n"
+    - git config --global user.email "%GIT_USER_EMAIL%"
+    - git config --global user.name "%GIT_USER_NAME%"
+    - git clone --depth 5 -q --branch=%TARGET_BRANCH% %STATIC_SITE_REPO% %TEMP%\static-site
+    - cd %TEMP%\static-site
+    #- del * /f /q
+    - for /d %%p IN (*) do rmdir "%%p" /s /q
+    - mkdir docs
+    - cd %TEMP%\static-site\docs
+    - echo ddao.wang>CNAME
+    - cd %TEMP%\static-site
+    - SETLOCAL EnableDelayedExpansion & robocopy "%APPVEYOR_BUILD_FOLDER%\public" "%TEMP%\static-site\docs" /e & IF !ERRORLEVEL! EQU 1 (exit 0) ELSE (IF !ERRORLEVEL! EQU 3 (exit 0) ELSE (exit 1))
+    - git add -A
+    - git commit -m "Update Static Site"
+    - git push origin %TARGET_BRANCH%
