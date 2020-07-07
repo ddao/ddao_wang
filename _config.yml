@@ -3,12 +3,15 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
-description: ''
+title: 希言自然
+subtitle: 'QQ群：181849313 入群密码：fhit'
+description: '烽火信息科技 猎狐软件'
 keywords:
-author: John Doe
-language: en
+author: ddao
+support: 烽火信息科技
+supportweb: https://fhit.cn
+#language: en
+language: zh-CN
 timezone: ''
 
 # URL
@@ -93,7 +96,8 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+#theme: landscape
+theme: hueman
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
