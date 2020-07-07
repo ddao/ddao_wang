@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Centos7安装高版本Cmake | 希言自然</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Cmake,Linux" />
+    
+    <meta name="description" content="环境：  代码编写：Windows 7 x64，Visual Studio 2015 运行环境：CentOS 7.6.1810 (查看CentOS版本：cat &#x2F;etc&#x2F;redhat-release)    　　不知道有没有和我一样，一直混迹于Windows，然后转到Linux编程的同学。尽管网络上对微软产品的喷子很多，但习惯了在Visual Studio编写代码，切换至Linux实在不习惯。尝试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Centos7安装高版本Cmake">
+<meta property="og:url" content="http://yoursite.com/2019/02/03/linux/cmake_setup/index.html">
+<meta property="og:site_name" content="希言自然">
+<meta property="og:description" content="环境：  代码编写：Windows 7 x64，Visual Studio 2015 运行环境：CentOS 7.6.1810 (查看CentOS版本：cat &#x2F;etc&#x2F;redhat-release)    　　不知道有没有和我一样，一直混迹于Windows，然后转到Linux编程的同学。尽管网络上对微软产品的喷子很多，但习惯了在Visual Studio编写代码，切换至Linux实在不习惯。尝试">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/png/linux/01.png">
+<meta property="article:published_time" content="2019-02-03T09:54:46.000Z">
+<meta property="article:modified_time" content="2020-07-07T00:20:51.515Z">
+<meta property="article:author" content="ddao">
+<meta property="article:tag" content="Cmake">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/png/linux/01.png">
+    
+
+    
+        <link rel="alternate" href="/" title="希言自然" type="application/atom+xml" />
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">QQ群：181849313 入群密码：fhit</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/">无线电</a><span class="main-nav-list-count">2</span><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a><span class="main-nav-list-count">1</span></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="main-nav-list-count">1</span></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><span class="main-nav-list-count">5</span><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="main-nav-list-count">1</span></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a><span class="main-nav-list-count">1</span></li></ul></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">关于</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-linux/cmake_setup" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Centos7安装高版本Cmake
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+      <i class="fa fa-calendar"></i>
+      <a href="/2019/02/03/linux/cmake_setup/" class="article-date">
+         <time datetime="2019-02-03T09:54:46.000Z" itemprop="datePublished">2019-02-03</time>
+      </a>
+    </div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Cmake/" rel="tag">Cmake</a>, <a class="tag-link" href="/tags/Linux/" rel="tag">Linux</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p>环境：</p>
+<ul>
+<li>代码编写：Windows 7 x64，Visual Studio 2015</li>
+<li>运行环境：CentOS 7.6.1810 (查看CentOS版本：cat /etc/redhat-release)  </li>
+</ul>
+<p>　　不知道有没有和我一样，一直混迹于Windows，然后转到Linux编程的同学。尽管网络上对微软产品的喷子很多，但习惯了在Visual Studio编写代码，切换至Linux实在不习惯。尝试了微软的VC_Linux插件，写个Hello World基本没什么问题，但如果用来项目开发，确实觉得它就是个小朋友的玩具而已。<br>　　好了，假设你已安装好VC_Linux更好的替代品VisualGDB，使用Visual Studio新建Linux项目，一步一步往下走。<br><img src="/png/linux/01.png" alt=""><br>默认是MSBuild，都已经跨到Linux平台，还是选择CMake跨平台编译。<br><img src="/png/linux/02.png" alt=""><br><img src="/png/linux/003.png" alt=""><br>将会提示没有安装Cmake软件，输入密码后，VisualGDB将自动帮你安装(需要当前用户有执行sudo权限)。<br><img src="/png/linux/004.png" alt=""><br>似乎一切顺利，点击”Finish”按钮。<br><img src="/png/linux/005.png" alt=""><br>悲催了，CMake版本过低，虽然提示为3.8以上，最好是安装3.10以上版本。<br><img src="/png/linux/06.png" alt=""><br>VisualGDB还是很人性化，点击确认按钮，弹出<a href="https://visualgdb.com/documentation/cmake/annotations/" target="_blank" rel="noopener">解决办法的网页</a>，可以跟着网页教程一步一步完成CMake的高版本安装。这里我想安装指定版本的CMake，步骤如下：  </p>
+<ul>
+<li>下载Cmake，<a href="https://cmake.org/files/dev/?C=M;O=D" target="_blank" rel="noopener">下载列表</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;cmake.org&#x2F;files&#x2F;dev&#x2F;cmake-3.13.20190131-g92bf7.tar.gz</span><br></pre></td></tr></table></figure></li>
+<li>解压Cmake，看到这么长的文件名，是不是很担心打错了(使用Linux的Tab自动补全功能吧！用过一次，你就会喜欢上它)。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar xvf cmake-3.13.20190131-g92bf7.tar.gz   </span><br><span class="line">cd cmake-3.13.20190131-g92bf7</span><br></pre></td></tr></table></figure></li>
+<li>编译安装cmake，编译过程耗时较长，喝杯茶，耐心等待吧。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;bootstrap</span><br><span class="line">gmake</span><br><span class="line">sudo gmake install</span><br></pre></td></tr></table></figure></li>
+<li>查看编译后的cmake版本<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;bin&#x2F;cmake --version</span><br></pre></td></tr></table></figure></li>
+<li>移除原来的cmake版本<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum remove cmake -y</span><br></pre></td></tr></table></figure></li>
+<li>新建软连接<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s &#x2F;usr&#x2F;local&#x2F;bin&#x2F;cmake &#x2F;usr&#x2F;bin&#x2F;</span><br></pre></td></tr></table></figure></li>
+<li>终端查看版本，确认安装无误。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cmake --version</span><br><span class="line">cmake version 3.13.20190131</span><br></pre></td></tr></table></figure>
+出现你安装的CMake版本表示成功！CMake编译、安装完成。</li>
+</ul>
+<p>注：如果哪个步骤出错了，可能是没有安装相应的软件包，比如wget、gcc等。缺啥软件包就补安装啥软件包吧，然后继续跟着步骤走，祝一切顺利。</p>
+<p>【TODO】创建新项目提示错误：<br>CMake exited with code 1<br>System.Exception: Failed to create a Unix domain socket. Please install ‘socat’ on your Linux machine via ‘sudo apt-get install socat’ or ‘yum install socat’</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="http://yoursite.com/2019/02/03/linux/cmake_setup/" data-id="ckcb6tzv5000p6cxh4lqb15z6" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ddao"
+        },
+        "headline": "Centos7安装高版本Cmake",
+        "image": "http://yoursite.com/png/linux/01.png",
+        "keywords": "Cmake Linux",
+        "genre": "软件开发",
+        "datePublished": "2019-02-03",
+        "dateCreated": "2019-02-03",
+        "dateModified": "2020-07-07",
+        "url": "http://yoursite.com/2019/02/03/linux/cmake_setup/",
+        "description": "环境：
+
+代码编写：Windows 7 x64，Visual Studio 2015
+运行环境：CentOS 7.6.1810 (查看CentOS版本：cat /etc/redhat-release)  
+
+　　不知道有没有和我一样，一直混迹于Windows，然后转到Linux编程的同学。尽管网络上对微软产品的喷子很多，但习惯了在Visual Studio编写代码，切换至Linux实在不习惯。尝试",
+        "wordCount": 132
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="stack-overflow" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-stack-overflow"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/fjddao" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2019/02/24/web/zmq_setup/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            VS Code配置PHP开发环境的方法
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2019/02/01/hackrf/hackrf_setup/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">在Windows下配置HackRF One环境</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/02/24/web/php_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/web/vs_code.png)" alt="VS Code配置PHP开发环境的方法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a></p>
+                            <p class="item-title"><a href="/2019/02/24/web/php_setup/" class="title">VS Code配置PHP开发环境的方法</a></p>
+                            <p class="item-date"><time datetime="2019-02-24T13:19:41.000Z" itemprop="datePublished">2019-02-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/02/24/web/zmq_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/web/php_web_02.png)" alt="VS Code配置PHP开发环境的方法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a></p>
+                            <p class="item-title"><a href="/2019/02/24/web/zmq_setup/" class="title">VS Code配置PHP开发环境的方法</a></p>
+                            <p class="item-date"><time datetime="2019-02-24T13:19:41.000Z" itemprop="datePublished">2019-02-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/02/03/linux/cmake_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/linux/01.png)" alt="Centos7安装高版本Cmake" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a></p>
+                            <p class="item-title"><a href="/2019/02/03/linux/cmake_setup/" class="title">Centos7安装高版本Cmake</a></p>
+                            <p class="item-date"><time datetime="2019-02-03T09:54:46.000Z" itemprop="datePublished">2019-02-03</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/02/01/hackrf/hackrf_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/hackrf/00.png)" alt="在Windows下配置HackRF One环境" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/">无线电</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a></p>
+                            <p class="item-title"><a href="/2019/02/01/hackrf/hackrf_setup/" class="title">在Windows下配置HackRF One环境</a></p>
+                            <p class="item-date"><time datetime="2019-02-01T09:44:14.000Z" itemprop="datePublished">2019-02-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/01/22/ubuntu_recovery/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/ubuntu_recovery/00.jpg)" alt="Ubuntu下忘记用户名和登录密码的解决方法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2019/01/22/ubuntu_recovery/" class="title">Ubuntu下忘记用户名和登录密码的解决方法</a></p>
+                            <p class="item-date"><time datetime="2019-01-22T18:00:00.000Z" itemprop="datePublished">2019-01-22</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/">无线电</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a><span class="category-list-count">1</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cmake/" rel="tag">Cmake</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HackRF/" rel="tag">HackRF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS-Code/" rel="tag">VS Code</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%B5%E5%8F%B0%E6%89%A7%E7%85%A7/" rel="tag">电台执照</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/" rel="tag">系统维护</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Cmake/" style="font-size: 10px;">Cmake</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HackRF/" style="font-size: 10px;">HackRF</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/VS-Code/" style="font-size: 20px;">VS Code</a> <a href="/tags/%E7%94%B5%E5%8F%B0%E6%89%A7%E7%85%A7/" style="font-size: 10px;">电台执照</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/" style="font-size: 10px;">系统维护</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io" target="_blank" rel="noopener">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 ddao</p>
+                
+                <p>Powered by  <a href="https://fhit.cn" target="_blank">烽火信息科技</a>. Thank for Github Hexo Hueman</p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'http://yoursite.com/2019/02/03/linux/cmake_setup/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>
