@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Windows远程桌面(mstsc)不能复制粘贴的解决办法 | 希言自然</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="Windows" />
+    
+    <meta name="description" content="原来通过mstsc远程连接Windows能够直接在本地和服务器之间复制、粘贴一些文字和文件，最近突然无法直接复制粘贴了，只能通过远程映射的本地磁盘方式交换文件，太为繁琐。 首先，已经确认远程桌面连接选项“本地资源→本地设备和资源→剪贴板”中勾选了剪贴板。  解决办法：在远程Windows服务器中重启“rdpclip.exe”进程即可。 1、打开资源管理器，杀掉rdpclip.exe进程；  2、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows远程桌面(mstsc)不能复制粘贴的解决办法">
+<meta property="og:url" content="https://ddao.wang/2020/07/07/windows/rdpclip/index.html">
+<meta property="og:site_name" content="希言自然">
+<meta property="og:description" content="原来通过mstsc远程连接Windows能够直接在本地和服务器之间复制、粘贴一些文字和文件，最近突然无法直接复制粘贴了，只能通过远程映射的本地磁盘方式交换文件，太为繁琐。 首先，已经确认远程桌面连接选项“本地资源→本地设备和资源→剪贴板”中勾选了剪贴板。  解决办法：在远程Windows服务器中重启“rdpclip.exe”进程即可。 1、打开资源管理器，杀掉rdpclip.exe进程；  2、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ddao.wang/png/windows/windows10-laptop.png">
+<meta property="article:published_time" content="2020-07-07T11:17:18.000Z">
+<meta property="article:modified_time" content="2020-07-08T09:09:57.122Z">
+<meta property="article:author" content="ddao">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ddao.wang/png/windows/windows10-laptop.png">
+    
+
+    
+        <link rel="alternate" href="/" title="希言自然" type="application/atom+xml" />
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">QQ群：181849313 入群密码：fhit</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/">无线电</a><span class="main-nav-list-count">2</span><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a><span class="main-nav-list-count">1</span></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="main-nav-list-count">1</span></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><span class="main-nav-list-count">11</span><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="main-nav-list-count">1</span></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a><span class="main-nav-list-count">7</span></li></ul></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">关于</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form" method="GET" action="https://www.baidu.com/s?">
+    <input name="wd" type="text" class="search-form-input" placeholder="搜索" />
+</form>
+<script>
+(function ($) {
+    $('.search-form').on('submit', function (e) {
+        var keyword = $('.search-form-input[name="wd"]').val();
+        window.location = 'https://www.baidu.com/s?wd=site:ddao.wang ' + keyword;
+        return false;
+    });
+})(jQuery);
+</script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-windows/rdpclip" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Windows远程桌面(mstsc)不能复制粘贴的解决办法
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+      <i class="fa fa-calendar"></i>
+      <a href="/2020/07/07/windows/rdpclip/" class="article-date">
+         <time datetime="2020-07-07T11:17:18.000Z" itemprop="datePublished">2020-07-07</time>
+      </a>
+    </div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Windows/" rel="tag">Windows</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/png/windows/windows10-laptop.png" alt="."></p>
+<p>原来通过mstsc远程连接Windows能够直接在本地和服务器之间复制、粘贴一些文字和文件，最近突然无法直接复制粘贴了，只能通过远程映射的本地磁盘方式交换文件，太为繁琐。</p>
+<p>首先，已经确认远程桌面连接选项“本地资源→本地设备和资源→剪贴板”中勾选了剪贴板。</p>
+<p><img src="/png/windows/rdpclip-01.png" alt="."></p>
+<p>解决办法：<br>在远程Windows服务器中重启“rdpclip.exe”进程即可。</p>
+<p>1、打开资源管理器，杀掉rdpclip.exe进程；</p>
+<p><img src="/png/windows/rdpclip-02.png" alt="."></p>
+<p>2、开始→运行，输入：rdpclip.exe，回车重启该进程。</p>
+<p><img src="/png/windows/rdpclip-03.png" alt="."></p>
+<p>3、此时粘贴文件或者文字发现已经可以粘贴了。</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ddao.wang/2020/07/07/windows/rdpclip/" data-id="ckcd56az50018xkxh30so4h95" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ddao"
+        },
+        "headline": "Windows远程桌面(mstsc)不能复制粘贴的解决办法",
+        "image": "https://ddao.wang/png/windows/windows10-laptop.png",
+        "keywords": "Windows",
+        "genre": "软件开发 软件部署",
+        "datePublished": "2020-07-07",
+        "dateCreated": "2020-07-07",
+        "dateModified": "2020-07-08",
+        "url": "https://ddao.wang/2020/07/07/windows/rdpclip/",
+        "description": "
+原来通过mstsc远程连接Windows能够直接在本地和服务器之间复制、粘贴一些文字和文件，最近突然无法直接复制粘贴了，只能通过远程映射的本地磁盘方式交换文件，太为繁琐。
+首先，已经确认远程桌面连接选项“本地资源→本地设备和资源→剪贴板”中勾选了剪贴板。
+
+解决办法：在远程Windows服务器中重启“rdpclip.exe”进程即可。
+1、打开资源管理器，杀掉rdpclip.exe进程；
+
+2、",
+        "wordCount": 9
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="stack-overflow" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-stack-overflow"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/fjddao" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2020/07/07/linux/custom_yum/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            CentOS 7搭建本地yum源
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2019/12/23/windows/c_cpp_setup/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">Win7下搭建C++ 编译环境(MSYS2+VSCode)</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/linux/nginx_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/linux/nginx.jpg)" alt="CentOS下使用yum安装Nginx" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/linux/nginx_setup/" class="title">CentOS下使用yum安装Nginx</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T14:36:22.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/linux/custom_yum/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/linux/yum_01.jpg)" alt="CentOS 7搭建本地yum源" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/linux/custom_yum/" class="title">CentOS 7搭建本地yum源</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T11:26:05.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/windows/rdpclip/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/windows/windows10-laptop.png)" alt="Windows远程桌面(mstsc)不能复制粘贴的解决办法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/windows/rdpclip/" class="title">Windows远程桌面(mstsc)不能复制粘贴的解决办法</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T11:17:18.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/12/23/windows/c_cpp_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/windows/msys2.png)" alt="Win7下搭建C++ 编译环境(MSYS2+VSCode)" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2019/12/23/windows/c_cpp_setup/" class="title">Win7下搭建C++ 编译环境(MSYS2+VSCode)</a></p>
+                            <p class="item-date"><time datetime="2019-12-23T15:49:20.000Z" itemprop="datePublished">2019-12-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/12/23/web/mariadb_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/web/Michael_Widenius.jpg)" alt="CentOS下使用yum安装MariaDB" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2019/12/23/web/mariadb_setup/" class="title">CentOS下使用yum安装MariaDB</a></p>
+                            <p class="item-date"><time datetime="2019-12-23T15:47:29.000Z" itemprop="datePublished">2019-12-23</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/">无线电</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a><span class="category-list-count">7</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">-PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-Cpp/" rel="tag">C/Cpp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cmake/" rel="tag">Cmake</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HackRF/" rel="tag">HackRF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LNMP/" rel="tag">LNMP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MariaDB/" rel="tag">MariaDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS-Code/" rel="tag">VS Code</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VSCode/" rel="tag">VSCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yum/" rel="tag">yum</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%B5%E5%8F%B0%E6%89%A7%E7%85%A7/" rel="tag">电台执照</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/" rel="tag">系统维护</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/PHP/" style="font-size: 10px;">-PHP</a> <a href="/tags/C-Cpp/" style="font-size: 10px;">C/Cpp</a> <a href="/tags/CentOS/" style="font-size: 10px;">CentOS</a> <a href="/tags/Cmake/" style="font-size: 10px;">Cmake</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HackRF/" style="font-size: 10px;">HackRF</a> <a href="/tags/LNMP/" style="font-size: 10px;">LNMP</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MariaDB/" style="font-size: 10px;">MariaDB</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/VS-Code/" style="font-size: 20px;">VS Code</a> <a href="/tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E7%94%B5%E5%8F%B0%E6%89%A7%E7%85%A7/" style="font-size: 10px;">电台执照</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/" style="font-size: 10px;">系统维护</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io" target="_blank" rel="noopener">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 ddao</p>
+                
+                <p>Powered by  <a href="https://fhit.cn" target="_blank">烽火信息科技</a>. Thank for Github Hexo Hueman</p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ddao.wang/2020/07/07/windows/rdpclip/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>CentOS下使用yum安装MariaDB | 希言自然</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="MariaDB,CentOS" />
+    
+    <meta name="description" content="首先让我们认识一下，MySQL的创始人Michael Widenius，1962年3月3日出生于芬兰赫尔辛基，MySQL的CTO及共同创始人。Monty Widenius撰写了MySQL的95%服务器端代码。  MariaDB由MySQL的创始人Michael Widenius（英语：Michael Widenius）主导开发，他早前曾以10亿美元的价格，将自己创建的公司MySQL AB卖给了SU">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS下使用yum安装MariaDB">
+<meta property="og:url" content="https://ddao.wang/2019/12/23/web/mariadb_setup/index.html">
+<meta property="og:site_name" content="希言自然">
+<meta property="og:description" content="首先让我们认识一下，MySQL的创始人Michael Widenius，1962年3月3日出生于芬兰赫尔辛基，MySQL的CTO及共同创始人。Monty Widenius撰写了MySQL的95%服务器端代码。  MariaDB由MySQL的创始人Michael Widenius（英语：Michael Widenius）主导开发，他早前曾以10亿美元的价格，将自己创建的公司MySQL AB卖给了SU">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ddao.wang/png/web/Michael_Widenius.jpg">
+<meta property="article:published_time" content="2019-12-23T15:47:29.000Z">
+<meta property="article:modified_time" content="2020-07-08T09:09:57.122Z">
+<meta property="article:author" content="ddao">
+<meta property="article:tag" content="MariaDB">
+<meta property="article:tag" content="CentOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ddao.wang/png/web/Michael_Widenius.jpg">
+    
+
+    
+        <link rel="alternate" href="/" title="希言自然" type="application/atom+xml" />
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">QQ群：181849313 入群密码：fhit</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/">无线电</a><span class="main-nav-list-count">2</span><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a><span class="main-nav-list-count">1</span></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="main-nav-list-count">1</span></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><span class="main-nav-list-count">11</span><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="main-nav-list-count">1</span></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a><span class="main-nav-list-count">7</span></li></ul></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">关于</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form" method="GET" action="https://www.baidu.com/s?">
+    <input name="wd" type="text" class="search-form-input" placeholder="搜索" />
+</form>
+<script>
+(function ($) {
+    $('.search-form').on('submit', function (e) {
+        var keyword = $('.search-form-input[name="wd"]').val();
+        window.location = 'https://www.baidu.com/s?wd=site:ddao.wang ' + keyword;
+        return false;
+    });
+})(jQuery);
+</script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-web/mariadb_setup" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        CentOS下使用yum安装MariaDB
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+      <i class="fa fa-calendar"></i>
+      <a href="/2019/12/23/web/mariadb_setup/" class="article-date">
+         <time datetime="2019-12-23T15:47:29.000Z" itemprop="datePublished">2019-12-23</time>
+      </a>
+    </div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/CentOS/" rel="tag">CentOS</a>, <a class="tag-link" href="/tags/MariaDB/" rel="tag">MariaDB</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p>首先让我们认识一下，MySQL的创始人Michael Widenius，1962年3月3日出生于芬兰赫尔辛基，MySQL的CTO及共同创始人。Monty Widenius撰写了MySQL的95%服务器端代码。</p>
+<p><img src="/png/web/Michael_Widenius.jpg" alt="."></p>
+<p>MariaDB由MySQL的创始人Michael Widenius（英语：Michael Widenius）主导开发，他早前曾以10亿美元的价格，将自己创建的公司MySQL AB卖给了SUN。此后，随着SUN被甲骨文收购，MySQL的所有权也落入Oracle的手中。MariaDB名称来自Michael Widenius的女儿Maria的名字。<br>MariaDB数据库管理系统是MySQL的一个分支，主要由开源社区在维护，采用GPL授权许可 MariaDB的目的是完全兼容MySQL，包括API和命令行，使之能轻松成为MySQL的代替品。在存储引擎方面，使用XtraDB（英语：XtraDB）来代替MySQL的InnoDB。</p>
+<p><img src="/png/web/mariadb.png" alt="."></p>
+<p>MariaDB直到5.5版本，均依照MySQL的版本。因此，使用MariaDB5.5的人会从MySQL 5.5中了解到MariaDB的所有功能。<br>从2012年11月12日起发布的10.0.0版开始，不再依照MySQL的版号。10.0.x版以5.5版为基础，加上移植自MySQL 5.6版的功能和自行开发的新功能。</p>
+<h2 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h2><p>有的centos7已经默认安装了Mariadb，可以查看自己的有没有安装，没有安装的再进行安装，已经安装了可以不用安装，也可以卸载了重装。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">卸载命令</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> yum remove mariadb-server</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> cat /etc/redhat-release</span></span><br><span class="line">CentOS Linux release 7.5.1804 (Core)</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装MariaDB"><a href="#安装MariaDB" class="headerlink" title="安装MariaDB"></a>安装MariaDB</h2><p>通过yum安装就行了。简单快捷，安装mariadb-server，默认依赖安装mariadb，一个是服务端、一个是客户端。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> yum -y install mariadb-server</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置MariaDB"><a href="#配置MariaDB" class="headerlink" title="配置MariaDB"></a>配置MariaDB</h2><ul>
+<li>安装完成后首先要把MariaDB服务开启，并设置为开机启动</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> systemctl start mariadb  <span class="comment"># 开启服务</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> systemctl <span class="built_in">enable</span> mariadb  <span class="comment"># 设置为开机自启动服务</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首次安装需要进行数据库的配置，命令都和mysql的一样</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> mysql_secure_installation</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置选项说明</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 输入数据库超级管理员root的密码(注意不是系统root的密码)，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 第一次进入还没有设置密码则直接回车</span></span><br><span class="line">Enter current password for root (enter for none):  </span><br><span class="line">Set root password? [Y/n]  # 设置密码，y</span><br><span class="line">New password:  # 新密码</span><br><span class="line">Re-enter new password:  # 再次输入密码</span><br><span class="line">Remove anonymous users? [Y/n]  # 移除匿名用户， y</span><br><span class="line"><span class="meta">#</span><span class="bash"> 拒绝root远程登录，n，不管y/n，都会拒绝root远程登录</span></span><br><span class="line">Disallow root login remotely? [Y/n]  </span><br><span class="line"><span class="meta">#</span><span class="bash"> 删除<span class="built_in">test</span>数据库，y：删除。n：不删除，数据库中会有一个<span class="built_in">test</span>数据库，一般不需要</span></span><br><span class="line">Remove test database and access to it? [Y/n]  </span><br><span class="line">Reload privilege tables now? [Y/n]  # 重新加载权限表，y。或者重启服务也许</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>测试是否能够登录成功，出现”MariaDB [(none)]&gt;”， 就表示已经能够正常登录使用MariaDB数据库了。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> mysql -u root -p</span></span><br><span class="line">Enter password:</span><br><span class="line">Welcome to the MariaDB monitor.  Commands end with ; or \g.</span><br><span class="line">Your MariaDB connection id is 8</span><br><span class="line">Server version: 5.5.60-MariaDB MariaDB Server</span><br><span class="line"></span><br><span class="line">Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.</span><br><span class="line"></span><br><span class="line">Type 'help;'or'\h' for help. Type '\c' to clear the current input statement.</span><br><span class="line"></span><br><span class="line">MariaDB [(none)]&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置字符集"><a href="#设置字符集" class="headerlink" title="设置字符集"></a>设置字符集</h2><p>设置MariaDB字符集为utf-8，修改”/etc/my.cnf”，”/etc/my.cnf.d/client.cnf”，”/etc/my.cnf.d/mysql-clients.cnf”三个文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#&#x2F;etc&#x2F;my.cnf</span><br><span class="line">在[mysqld]标签下添加</span><br><span class="line">init_connect&#x3D;&#39;SET collation_connection &#x3D; utf8_unicode_ci&#39;</span><br><span class="line">init_connect&#x3D;&#39;SET NAMES utf8&#39;</span><br><span class="line">character-set-server&#x3D;utf8</span><br><span class="line">collation-server&#x3D;utf8_unicode_ci</span><br><span class="line">skip-character-set-client-handshake</span><br><span class="line"></span><br><span class="line">#&#x2F;etc&#x2F;my.cnf.d&#x2F;client.cnf</span><br><span class="line">在[client]标签下添加</span><br><span class="line">default-character-set&#x3D;utf8</span><br><span class="line"></span><br><span class="line">#&#x2F;etc&#x2F;my.cnf.d&#x2F;mysql-clients.cnf</span><br><span class="line">在[mysql]标签下添加</span><br><span class="line">default-character-set&#x3D;utf8</span><br><span class="line"></span><br><span class="line">#重启服务</span><br><span class="line">#systemctl restart mariadb</span><br></pre></td></tr></table></figure>
+
+<p>进入mariadb查看字符集</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">配置字符集前</span></span><br><span class="line">MariaDB [(none)]&gt; show variables like "%character%";</span><br><span class="line">show variables like "%collation%";</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">| Variable_name            | Value                      |</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">| character_set_client     | utf8                       |</span><br><span class="line">| character_set_connection | utf8                       |</span><br><span class="line">| character_set_database   | latin1                     |</span><br><span class="line">| character_set_filesystem | binary                     |</span><br><span class="line">| character_set_results    | utf8                       |</span><br><span class="line">| character_set_server     | latin1                     |</span><br><span class="line">| character_set_system     | utf8                       |</span><br><span class="line">| character_sets_dir       | /usr/share/mysql/charsets/ |</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">8 rows in set (0.01 sec)</span><br><span class="line"></span><br><span class="line">+----------------------+-------------------+</span><br><span class="line">| Variable_name        | Value             |</span><br><span class="line">+----------------------+-------------------+</span><br><span class="line">| collation_connection | utf8_general_ci   |</span><br><span class="line">| collation_database   | latin1_swedish_ci |</span><br><span class="line">| collation_server     | latin1_swedish_ci |</span><br><span class="line">+----------------------+-------------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">配置字符集后</span></span><br><span class="line">MariaDB [(none)]&gt; show variables like "%character%";</span><br><span class="line">show variables like "%collation%";</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">| Variable_name            | Value                      |</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">| character_set_client     | utf8                       |</span><br><span class="line">| character_set_connection | utf8                       |</span><br><span class="line">| character_set_database   | utf8                       |</span><br><span class="line">| character_set_filesystem | binary                     |</span><br><span class="line">| character_set_results    | utf8                       |</span><br><span class="line">| character_set_server     | utf8                       |</span><br><span class="line">| character_set_system     | utf8                       |</span><br><span class="line">| character_sets_dir       | /usr/share/mysql/charsets/ |</span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line">8 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">+----------------------+-----------------+</span><br><span class="line">| Variable_name        | Value           |</span><br><span class="line">+----------------------+-----------------+</span><br><span class="line">| collation_connection | utf8_unicode_ci |</span><br><span class="line">| collation_database   | utf8_unicode_ci |</span><br><span class="line">| collation_server     | utf8_unicode_ci |</span><br><span class="line">+----------------------+-----------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h2 id="远程访问数据库"><a href="#远程访问数据库" class="headerlink" title="远程访问数据库"></a>远程访问数据库</h2><p>MariaDB默认是拒绝root远程登录的。<br>先查看mysql数据库中的user表：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [(none)]&gt; select host,user from mysql.user;</span><br><span class="line">+-----------------------+------+</span><br><span class="line">| host                  | user |</span><br><span class="line">+-----------------------+------+</span><br><span class="line">| 127.0.0.1             | root |</span><br><span class="line">| ::1                   | root |</span><br><span class="line">| localhost             | root |</span><br><span class="line">| localhost.localdomain | root |</span><br><span class="line">+-----------------------+------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>127.0.0.1，::1，localhost三个都是指本机；</p>
+<ul>
+<li>给root用户添加远程访问权限</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 所有IP都可以使用root连接；<span class="string">"%"</span>表示针对所有IP，<span class="string">"password"</span>表示将用这个密码登录，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可以和本机登录root的密码不一样(root在不同IP登录，采用不一样的密码)。</span></span><br><span class="line">MariaDB [(none)]&gt; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED</span><br><span class="line">BY 'password' WITH GRANT OPTION;</span><br><span class="line"><span class="meta">#</span><span class="bash">只让某个IP段(192.168.1.xx)的主机连接，可以修改为<span class="string">"192.168.1.%"</span>；</span></span><br><span class="line">MariaDB [(none)]&gt; GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.1.%'</span><br><span class="line">IDENTIFIED BY 'password' WITH GRANT OPTION;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">刷新权限</span></span><br><span class="line">MariaDB [(none)]&gt; flush privileges;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">或者重启MariaDB服务也可以(二选一即可)</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl restart mariadb</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建新的用户，并赋予远程访问权限</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">创建用户user,可远程登陆,密码为<span class="string">"password"</span>；</span></span><br><span class="line">CREATE USER 'user'@'%' IDENTIFIED BY "password";</span><br><span class="line"><span class="meta">#</span><span class="bash">*.*是指所有库的所有表，可以限制权限指定数据库，或指定数据库的哪些表</span></span><br><span class="line">GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' IDENTIFIED BY 'password' WITH</span><br><span class="line">GRANT OPTION;</span><br></pre></td></tr></table></figure>
+
+<h2 id="访问客户端"><a href="#访问客户端" class="headerlink" title="访问客户端"></a>访问客户端</h2><p>使用Navicat客户端进行访问MariaDB数据库;<br>如果上面配置都没出错,你应该可以看到以下页面:<br><img src="/png/web/navicat.png" alt="."></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ddao.wang/2019/12/23/web/mariadb_setup/" data-id="ckcd56az5000yxkxhauv2honh" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ddao"
+        },
+        "headline": "CentOS下使用yum安装MariaDB",
+        "image": "https://ddao.wang/png/web/Michael_Widenius.jpg",
+        "keywords": "MariaDB CentOS",
+        "genre": "软件开发 软件部署",
+        "datePublished": "2019-12-23",
+        "dateCreated": "2019-12-23",
+        "dateModified": "2020-07-08",
+        "url": "https://ddao.wang/2019/12/23/web/mariadb_setup/",
+        "description": "首先让我们认识一下，MySQL的创始人Michael Widenius，1962年3月3日出生于芬兰赫尔辛基，MySQL的CTO及共同创始人。Monty Widenius撰写了MySQL的95%服务器端代码。
+
+MariaDB由MySQL的创始人Michael Widenius（英语：Michael Widenius）主导开发，他早前曾以10亿美元的价格，将自己创建的公司MySQL AB卖给了SU",
+        "wordCount": 1269
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="stack-overflow" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-stack-overflow"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/fjddao" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2019/12/23/windows/c_cpp_setup/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            Win7下搭建C++ 编译环境(MSYS2+VSCode)
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2019/12/23/web/lnmp_setup/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">CentOS7下快速搭建LNMP环境</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/linux/nginx_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/linux/nginx.jpg)" alt="CentOS下使用yum安装Nginx" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/linux/nginx_setup/" class="title">CentOS下使用yum安装Nginx</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T14:36:22.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/linux/custom_yum/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/linux/yum_01.jpg)" alt="CentOS 7搭建本地yum源" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/linux/custom_yum/" class="title">CentOS 7搭建本地yum源</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T11:26:05.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/windows/rdpclip/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/windows/windows10-laptop.png)" alt="Windows远程桌面(mstsc)不能复制粘贴的解决办法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/windows/rdpclip/" class="title">Windows远程桌面(mstsc)不能复制粘贴的解决办法</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T11:17:18.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/12/23/windows/c_cpp_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/windows/msys2.png)" alt="Win7下搭建C++ 编译环境(MSYS2+VSCode)" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2019/12/23/windows/c_cpp_setup/" class="title">Win7下搭建C++ 编译环境(MSYS2+VSCode)</a></p>
+                            <p class="item-date"><time datetime="2019-12-23T15:49:20.000Z" itemprop="datePublished">2019-12-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/12/23/web/mariadb_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/web/Michael_Widenius.jpg)" alt="CentOS下使用yum安装MariaDB" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2019/12/23/web/mariadb_setup/" class="title">CentOS下使用yum安装MariaDB</a></p>
+                            <p class="item-date"><time datetime="2019-12-23T15:47:29.000Z" itemprop="datePublished">2019-12-23</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/">无线电</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a><span class="category-list-count">7</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">-PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-Cpp/" rel="tag">C/Cpp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cmake/" rel="tag">Cmake</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HackRF/" rel="tag">HackRF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LNMP/" rel="tag">LNMP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MariaDB/" rel="tag">MariaDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS-Code/" rel="tag">VS Code</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VSCode/" rel="tag">VSCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yum/" rel="tag">yum</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%B5%E5%8F%B0%E6%89%A7%E7%85%A7/" rel="tag">电台执照</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/" rel="tag">系统维护</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/PHP/" style="font-size: 10px;">-PHP</a> <a href="/tags/C-Cpp/" style="font-size: 10px;">C/Cpp</a> <a href="/tags/CentOS/" style="font-size: 10px;">CentOS</a> <a href="/tags/Cmake/" style="font-size: 10px;">Cmake</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HackRF/" style="font-size: 10px;">HackRF</a> <a href="/tags/LNMP/" style="font-size: 10px;">LNMP</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MariaDB/" style="font-size: 10px;">MariaDB</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/VS-Code/" style="font-size: 20px;">VS Code</a> <a href="/tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E7%94%B5%E5%8F%B0%E6%89%A7%E7%85%A7/" style="font-size: 10px;">电台执照</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/" style="font-size: 10px;">系统维护</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io" target="_blank" rel="noopener">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 ddao</p>
+                
+                <p>Powered by  <a href="https://fhit.cn" target="_blank">烽火信息科技</a>. Thank for Github Hexo Hueman</p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ddao.wang/2019/12/23/web/mariadb_setup/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>CentOS 7搭建本地yum源 | 希言自然</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="linux,yum" />
+    
+    <meta name="description" content="前言　　大家在工作中肯定或多或少的会遇到使用yum源；比如前几天在部署CentOS测试环境，在安装各种中间件的时候，发现各种依赖都没有；后来一检查，发现安装的操作系统是CentOS Mini版，好吧，我认了； 为了完成测试环境的搭建，我就搭建了一个局域网的yum源。本来搭建本地的yum源也没有多大的难度，但是服务器都在内网，所以就需要搭建局域网的yum源。说到yum源搭建，主要有以下两种方式：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS 7搭建本地yum源">
+<meta property="og:url" content="https://ddao.wang/2020/07/07/linux/custom_yum/index.html">
+<meta property="og:site_name" content="希言自然">
+<meta property="og:description" content="前言　　大家在工作中肯定或多或少的会遇到使用yum源；比如前几天在部署CentOS测试环境，在安装各种中间件的时候，发现各种依赖都没有；后来一检查，发现安装的操作系统是CentOS Mini版，好吧，我认了； 为了完成测试环境的搭建，我就搭建了一个局域网的yum源。本来搭建本地的yum源也没有多大的难度，但是服务器都在内网，所以就需要搭建局域网的yum源。说到yum源搭建，主要有以下两种方式：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ddao.wang/png/linux/yum_01.jpg">
+<meta property="article:published_time" content="2020-07-07T11:26:05.000Z">
+<meta property="article:modified_time" content="2020-07-08T09:09:57.106Z">
+<meta property="article:author" content="ddao">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="yum">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ddao.wang/png/linux/yum_01.jpg">
+    
+
+    
+        <link rel="alternate" href="/" title="希言自然" type="application/atom+xml" />
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">QQ群：181849313 入群密码：fhit</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/">无线电</a><span class="main-nav-list-count">2</span><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a><span class="main-nav-list-count">1</span></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="main-nav-list-count">1</span></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><span class="main-nav-list-count">11</span><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="main-nav-list-count">1</span></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a><span class="main-nav-list-count">7</span></li></ul></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">关于</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form" method="GET" action="https://www.baidu.com/s?">
+    <input name="wd" type="text" class="search-form-input" placeholder="搜索" />
+</form>
+<script>
+(function ($) {
+    $('.search-form').on('submit', function (e) {
+        var keyword = $('.search-form-input[name="wd"]').val();
+        window.location = 'https://www.baidu.com/s?wd=site:ddao.wang ' + keyword;
+        return false;
+    });
+})(jQuery);
+</script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-linux/custom_yum" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        CentOS 7搭建本地yum源
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+      <i class="fa fa-calendar"></i>
+      <a href="/2020/07/07/linux/custom_yum/" class="article-date">
+         <time datetime="2020-07-07T11:26:05.000Z" itemprop="datePublished">2020-07-07</time>
+      </a>
+    </div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/linux/" rel="tag">linux</a>, <a class="tag-link" href="/tags/yum/" rel="tag">yum</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/png/linux/yum_01.jpg" alt="."></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　大家在工作中肯定或多或少的会遇到使用yum源；比如前几天在部署CentOS测试环境，在安装各种中间件的时候，发现各种依赖都没有；后来一检查，发现安装的操作系统是CentOS Mini版，好吧，我认了； 为了完成测试环境的搭建，我就搭建了一个局域网的yum源。本来搭建本地的yum源也没有多大的难度，但是服务器都在内网，所以就需要搭建局域网的yum源。说到yum源搭建，主要有以下两种方式：</p>
+<ul>
+<li>搭建本地yum源</li>
+<li>搭建局域网yum源</li>
+</ul>
+<p>　　无非就这两种，下面就分别对这两种yum源的搭建方式进行总结。</p>
+<h2 id="搭建本地yum源"><a href="#搭建本地yum源" class="headerlink" title="搭建本地yum源"></a>搭建本地yum源</h2><p>　　本地yum源，就意味着只有搭建该yum源的这台服务器能使用，其它的服务器都不能使用该yum源。搭建本地yum源的所有步骤如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 在/mnt目录创建挂载镜像的文件夹</span></span><br><span class="line">cd /mnt</span><br><span class="line">mkdir iso</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 将iso镜像挂载到/mnt/iso目录</span></span><br><span class="line">mount -o loop CentOS-7-x86_64-DVD-1810.iso /mnt/iso</span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果iso镜像已经加载至CentOS系统，采用如下命令，加载光驱至/mnt/iso目录</span></span><br><span class="line">mount -t iso9660 /dev/sr0 /mnt/iso</span><br><span class="line"><span class="meta">#</span><span class="bash"> 当然你也可以把所有文件都复制到/mnt/iso目录</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 挂载成功后可以使用df -h命令查看</span></span><br><span class="line">[root@*.*.*.*]# df -h</span><br><span class="line">Filesystem               Size  Used Avail Use% Mounted on</span><br><span class="line">/dev/mapper/centos-root   29G  5.3G   23G  19% /</span><br><span class="line">devtmpfs                 484M     0  484M   0% /dev</span><br><span class="line">tmpfs                    496M     0  496M   0% /dev/shm</span><br><span class="line">tmpfs                    496M  6.8M  489M   2% /run</span><br><span class="line">tmpfs                    496M     0  496M   0% /sys/fs/cgroup</span><br><span class="line">/dev/sda1               1014M  132M  883M  13% /boot</span><br><span class="line">tmpfs                    100M     0  100M   0% /run/user/0</span><br><span class="line">tmpfs                    100M     0  100M   0% /run/user/1000</span><br><span class="line">/dev/loop0               4.3G  4.3G     0 100% /mnt/iso</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改yum配置文件</span></span><br><span class="line">cd /etc/yum.repos.d</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 先备份配置文件</span></span><br><span class="line">mkdir bak</span><br><span class="line">mv *.repo ./bak</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 将备份的CentOS-Media.repo文件拷贝出来</span></span><br><span class="line">cp ./bak/CentOS-Media.repo ./</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 修改CentOS-Media.repo配置文件，修改后内容如下：</span></span><br><span class="line">[c7-media]</span><br><span class="line">name=CentOS-$releasever - Media</span><br><span class="line"><span class="meta">#</span><span class="bash">baseurl=file:///media/CentOS/</span></span><br><span class="line"><span class="meta">#</span><span class="bash">        file:///media/cdrom/</span></span><br><span class="line"><span class="meta">#</span><span class="bash">        file:///media/cdrecorder/</span></span><br><span class="line">baseurl=file:///mnt/iso/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1  # 设置为1</span><br><span class="line">gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7</span><br></pre></td></tr></table></figure>
+
+<p>　　至此搭建本地yum源的操作完成，接下来我们清除原有的yum信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum clean all</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，一个崭新的本地yum源就可以使用了。</p>
+<h2 id="搭建局域网yum源"><a href="#搭建局域网yum源" class="headerlink" title="搭建局域网yum源"></a>搭建局域网yum源</h2><p>　　除了可以搭建本地yum源外，我们还可以基于HTTP方式配置yum源，这样我们就可以配置一个局域网内都可以使用的yum源。</p>
+<p>　　一般都是通过Nginx来搭建HTTP的yum源，首先搭建Nginx，这里就不细说如何搭建Nginx了。接下来将iso镜像文件解压缩到一个目录。现在，我们就可以配置Nginx配置文件了。不建议直接修改nginx.conf，而是在/etc/nginx/conf.d/目录下创建一个新的conf文件，如yum.conf，文件内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       8080;</span><br><span class="line">    server_name  localhost;</span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        autoindex  on;</span><br><span class="line">        root   &#x2F;home&#x2F;jelly&#x2F;iso&#x2F;; # （这里请换成你的实际目录路径）</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　最后，在使用该yum源的机器上，我们开始配置yum的配置文件，在/etc/yum.repos.d新建一个名为Nginx-yum.repo的配置文件，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[Nginx-yum]</span><br><span class="line">name&#x3D;Nginx-yum</span><br><span class="line"># mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;$releasever</span><br><span class="line"># &amp;arch&#x3D;$basearch&amp;repo&#x3D;os&amp;infra&#x3D;$infra</span><br><span class="line">baseurl&#x3D;http:&#x2F;&#x2F;*.*.*.*:8080</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgcheck&#x3D;1</span><br><span class="line">gpgkey&#x3D;http:&#x2F;&#x2F;*.*.*.*:8080&#x2F;RPM-GPG-KEY-CentOS-7</span><br></pre></td></tr></table></figure>
+
+<p>　　至此搭建局域网yum源的操作完成，接下来我们清除原有的yum信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum clean all</span><br></pre></td></tr></table></figure>
+
+<p>　　这样，一个崭新的局域网yum源就可以使用了。</p>
+<h2 id="如何在yum源中，添加自定义rpm包"><a href="#如何在yum源中，添加自定义rpm包" class="headerlink" title="如何在yum源中，添加自定义rpm包"></a>如何在yum源中，添加自定义rpm包</h2><p>　　首先，看看有外网链接时，如何使用yum安装Nginx。<a href="/2019/10/31/linux/nginx_setup/">请移步我的另外一篇文章</a>。<br>　　比如，内网机器需要安装nginx服务器，想使用yum安装Nginx，如何把nginx包添加到本地yum源中呢？也许有人建议，使用reposync命令同步阿里yum源、网易yum源或者其它yum源，再复制到内网服务器上。网络上也有很多类似教程，真实施起来费时费力，而且需要很大的储存空间。<br>　　这里介绍一种办法，既能使用yum解决软件依赖问题，又不用同步庞大的yum源。即使用yum的downloadonly插件来下载rpm包和依赖包。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载安装yumdownloadonly插件</span></span><br><span class="line">yum install yum-plugin-downloadonly</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 下载到指定目录（依赖包会一起下载）</span></span><br><span class="line">yum install --downloadonly --downloaddir=/root/nginx nginx</span><br></pre></td></tr></table></figure>
+
+<p>　　把rpm包及依赖包通过光盘等方式复制到内网服务器上，制作本地yum源。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装createrepo命令。</span></span><br><span class="line">yum -y install createrepo</span><br><span class="line"><span class="meta">#</span><span class="bash"> 重建yum源的索引，/mnt/ios/目录下会多出一个repodata的目录</span></span><br><span class="line">createrepo -v /mnt/ios/ </span><br><span class="line"><span class="meta">#</span><span class="bash"> createrepo命令耗时较长，如果只是添加少量rpm包，可以使用--updata参数，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 大大减少建立索引的时间。</span></span><br><span class="line">createrepo --update /mnt/iso/</span><br></pre></td></tr></table></figure>
+
+<p>　　使用该局域网yum源的机器，执行以下命令，就可以更新yum源数据了。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">yum clean all</span></span><br><span class="line"><span class="meta">#</span><span class="bash">yum makecache</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章详细的总结了两种搭建yum源的方法，并介绍了如何添加自定义的rpm包，以及建立yum源的rpm索引。通过这篇文章中总结的方法，足以应对我们日常工作中的需要。好了，东西不多，但是非常实用，希望我这里总结的内容对大家有帮助。</p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ddao.wang/2020/07/07/linux/custom_yum/" data-id="ckcd56ayp000rxkxhgmjmgosw" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ddao"
+        },
+        "headline": "CentOS 7搭建本地yum源",
+        "image": "https://ddao.wang/png/linux/yum_01.jpg",
+        "keywords": "linux yum",
+        "genre": "软件开发 软件部署",
+        "datePublished": "2020-07-07",
+        "dateCreated": "2020-07-07",
+        "dateModified": "2020-07-08",
+        "url": "https://ddao.wang/2020/07/07/linux/custom_yum/",
+        "description": "
+前言　　大家在工作中肯定或多或少的会遇到使用yum源；比如前几天在部署CentOS测试环境，在安装各种中间件的时候，发现各种依赖都没有；后来一检查，发现安装的操作系统是CentOS Mini版，好吧，我认了； 为了完成测试环境的搭建，我就搭建了一个局域网的yum源。本来搭建本地的yum源也没有多大的难度，但是服务器都在内网，所以就需要搭建局域网的yum源。说到yum源搭建，主要有以下两种方式：
+",
+        "wordCount": 635
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="stack-overflow" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-stack-overflow"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/fjddao" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2020/07/07/linux/nginx_setup/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            CentOS下使用yum安装Nginx
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2020/07/07/windows/rdpclip/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">Windows远程桌面(mstsc)不能复制粘贴的解决办法</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/linux/nginx_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/linux/nginx.jpg)" alt="CentOS下使用yum安装Nginx" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/linux/nginx_setup/" class="title">CentOS下使用yum安装Nginx</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T14:36:22.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/linux/custom_yum/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/linux/yum_01.jpg)" alt="CentOS 7搭建本地yum源" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/linux/custom_yum/" class="title">CentOS 7搭建本地yum源</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T11:26:05.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/windows/rdpclip/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/windows/windows10-laptop.png)" alt="Windows远程桌面(mstsc)不能复制粘贴的解决办法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/windows/rdpclip/" class="title">Windows远程桌面(mstsc)不能复制粘贴的解决办法</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T11:17:18.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/12/23/windows/c_cpp_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/windows/msys2.png)" alt="Win7下搭建C++ 编译环境(MSYS2+VSCode)" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2019/12/23/windows/c_cpp_setup/" class="title">Win7下搭建C++ 编译环境(MSYS2+VSCode)</a></p>
+                            <p class="item-date"><time datetime="2019-12-23T15:49:20.000Z" itemprop="datePublished">2019-12-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/12/23/web/mariadb_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/web/Michael_Widenius.jpg)" alt="CentOS下使用yum安装MariaDB" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2019/12/23/web/mariadb_setup/" class="title">CentOS下使用yum安装MariaDB</a></p>
+                            <p class="item-date"><time datetime="2019-12-23T15:47:29.000Z" itemprop="datePublished">2019-12-23</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/">无线电</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a><span class="category-list-count">7</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">-PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-Cpp/" rel="tag">C/Cpp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cmake/" rel="tag">Cmake</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HackRF/" rel="tag">HackRF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LNMP/" rel="tag">LNMP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MariaDB/" rel="tag">MariaDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS-Code/" rel="tag">VS Code</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VSCode/" rel="tag">VSCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yum/" rel="tag">yum</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%B5%E5%8F%B0%E6%89%A7%E7%85%A7/" rel="tag">电台执照</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/" rel="tag">系统维护</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/PHP/" style="font-size: 10px;">-PHP</a> <a href="/tags/C-Cpp/" style="font-size: 10px;">C/Cpp</a> <a href="/tags/CentOS/" style="font-size: 10px;">CentOS</a> <a href="/tags/Cmake/" style="font-size: 10px;">Cmake</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HackRF/" style="font-size: 10px;">HackRF</a> <a href="/tags/LNMP/" style="font-size: 10px;">LNMP</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MariaDB/" style="font-size: 10px;">MariaDB</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/VS-Code/" style="font-size: 20px;">VS Code</a> <a href="/tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E7%94%B5%E5%8F%B0%E6%89%A7%E7%85%A7/" style="font-size: 10px;">电台执照</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/" style="font-size: 10px;">系统维护</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io" target="_blank" rel="noopener">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 ddao</p>
+                
+                <p>Powered by  <a href="https://fhit.cn" target="_blank">烽火信息科技</a>. Thank for Github Hexo Hueman</p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ddao.wang/2020/07/07/linux/custom_yum/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>

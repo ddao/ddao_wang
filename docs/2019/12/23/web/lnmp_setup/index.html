@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>CentOS7下快速搭建LNMP环境 | 希言自然</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="LNMP,-PHP" />
+    
+    <meta name="description" content="LNMP：Linux+Nginx+MySql+PHP 安装NginxNginx的正确读法应该是Engine X。详细请参考我的另一篇文章: CentOS下使用yum安装Nginx。安装成功后，启动nginx应该就可以看到熟悉的欢迎界面. 1234#rpm -ivh http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;centos&#x2F;7&#x2F;noarch&#x2F;RPMS&#x2F;          nginx-rele">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS7下快速搭建LNMP环境">
+<meta property="og:url" content="https://ddao.wang/2019/12/23/web/lnmp_setup/index.html">
+<meta property="og:site_name" content="希言自然">
+<meta property="og:description" content="LNMP：Linux+Nginx+MySql+PHP 安装NginxNginx的正确读法应该是Engine X。详细请参考我的另一篇文章: CentOS下使用yum安装Nginx。安装成功后，启动nginx应该就可以看到熟悉的欢迎界面. 1234#rpm -ivh http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;centos&#x2F;7&#x2F;noarch&#x2F;RPMS&#x2F;          nginx-rele">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ddao.wang/png/web/lnmp.jpg">
+<meta property="article:published_time" content="2019-12-23T15:46:54.000Z">
+<meta property="article:modified_time" content="2020-07-08T09:09:57.122Z">
+<meta property="article:author" content="ddao">
+<meta property="article:tag" content="LNMP">
+<meta property="article:tag" content="-PHP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ddao.wang/png/web/lnmp.jpg">
+    
+
+    
+        <link rel="alternate" href="/" title="希言自然" type="application/atom+xml" />
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.5.0/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">QQ群：181849313 入群密码：fhit</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/">无线电</a><span class="main-nav-list-count">2</span><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a><span class="main-nav-list-count">1</span></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="main-nav-list-count">1</span></li></ul></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><span class="main-nav-list-count">11</span><ul class="main-nav-list-child"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="main-nav-list-count">1</span></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a><span class="main-nav-list-count">7</span></li></ul></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">关于</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form" method="GET" action="https://www.baidu.com/s?">
+    <input name="wd" type="text" class="search-form-input" placeholder="搜索" />
+</form>
+<script>
+(function ($) {
+    $('.search-form').on('submit', function (e) {
+        var keyword = $('.search-form-input[name="wd"]').val();
+        window.location = 'https://www.baidu.com/s?wd=site:ddao.wang ' + keyword;
+        return false;
+    });
+})(jQuery);
+</script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="page-title-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-web/lnmp_setup" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        CentOS7下快速搭建LNMP环境
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+      <i class="fa fa-calendar"></i>
+      <a href="/2019/12/23/web/lnmp_setup/" class="article-date">
+         <time datetime="2019-12-23T15:46:54.000Z" itemprop="datePublished">2019-12-23</time>
+      </a>
+    </div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/PHP/" rel="tag">-PHP</a>, <a class="tag-link" href="/tags/LNMP/" rel="tag">LNMP</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+
+            
+
+            
+
+            <p><img src="/png/web/lnmp.jpg" alt="."><br>LNMP：Linux+Nginx+MySql+PHP</p>
+<h2 id="安装Nginx"><a href="#安装Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h2><p>Nginx的正确读法应该是Engine X。<br>详细请参考我的另一篇文章: <a href="/linux/nginx_setup/">CentOS下使用yum安装Nginx</a>。<br>安装成功后，启动nginx应该就可以看到熟悉的欢迎界面.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">rpm -ivh http://nginx.org/packages/centos/7/noarch/RPMS/</span></span><br><span class="line">          nginx-release-centos-7-0.el7.ngx.noarch.rpm</span><br><span class="line"><span class="meta">#</span><span class="bash">yum -y install nginx</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl start nginx</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/png/web/welcome_nginx.png" alt="."></p>
+<h2 id="安装MariaDB"><a href="#安装MariaDB" class="headerlink" title="安装MariaDB"></a>安装MariaDB</h2><p>详细请参考我的另一篇文章:<a href="/web/mariadb_setup/">CentOS7下使用yum安装MariaDB</a>。<br>安装成功后，启动MariaDB；使用Navicat客户端连接数据库，应该就可以看到熟悉的连接成功提示信息。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">yum -y install mariadb-server</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl start mariadb</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/png/web/navicat.png" alt="."></p>
+<h2 id="安装PHP7-2-24-remi版本"><a href="#安装PHP7-2-24-remi版本" class="headerlink" title="安装PHP7.2.24[remi版本]"></a>安装PHP7.2.24[remi版本]</h2><h3 id="配置yum源"><a href="#配置yum源" class="headerlink" title="配置yum源"></a>配置yum源</h3><p>安装php72w，是需要配置额外的yum源地址的。</p>
+<ul>
+<li>epel-release</li>
+<li>remi</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release -y</span><br><span class="line">yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm</span><br></pre></td></tr></table></figure>
+
+<p>注：<br>remi源依赖epel-release源，安装之前必须先安装epel-release源。<br>remi源版本更新比webtatic源快，并且是CentOS建议的yum源。</p>
+<p>安装PHP和扩展包<br>PHP对于扩展库很多，根据需要安装PHP和相关扩展包。其中，cli、fpm、common和devel一般都要安装，其它模块看自己需要进行安装。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum -y install php72</span><br><span class="line">yum -y install php72-php-fpm php72-php-gd php72-php-json php72-php-mbstring</span><br><span class="line">       php72-php-mysqlnd php72-php-xml php72-php-xmlrpc php72-php-opcache</span><br><span class="line">       php72-php-crypt</span><br></pre></td></tr></table></figure>
+
+<p>启动php-fpm</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">systemctl start php72-php-fpm</span></span><br></pre></td></tr></table></figure>
+
+<p>查看PHP版本，出现如下图提示，说明PHP已安装成功。可输入php72 -m命令，查看PHP已安装模块。</p>
+<p><img src="/png/web/php72-v.png" alt="."></p>
+<p>注：最好创建一个软链接，就可以直接执行”php -v”。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /opt/remi/php72/root/usr/bin/php /usr/bin/php</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装PHP7-2-24-webtatic版本"><a href="#安装PHP7-2-24-webtatic版本" class="headerlink" title="安装PHP7.2.24[webtatic版本]"></a>安装PHP7.2.24[webtatic版本]</h2><h3 id="配置yum源4-webtatic版本"><a href="#配置yum源4-webtatic版本" class="headerlink" title="配置yum源4[webtatic版本]"></a>配置yum源4[webtatic版本]</h3><p>安装php72w，是需要配置额外的yum源地址的。</p>
+<ul>
+<li>epel-release</li>
+<li>webtatic</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release -y</span><br><span class="line">rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm</span><br></pre></td></tr></table></figure>
+
+<p>注：webtatic源依赖epel-release源，安装之前，必须先安装epel-release源。</p>
+<h3 id="清除PHP历史版本"><a href="#清除PHP历史版本" class="headerlink" title="清除PHP历史版本"></a>清除PHP历史版本</h3><p>为了防止centos上面发生php冲突，清楚PHP历史版本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y remove php*</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装PHP和扩展包"><a href="#安装PHP和扩展包" class="headerlink" title="安装PHP和扩展包"></a>安装PHP和扩展包</h3><p>PHP对于扩展库很多，根据需要安装PHP和相关扩展包。其中，cli、fpm、common和devel一般都要安装，其它模块看自己需要进行安装。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum -y install php72w php72w-cli php72w-fpm php72w-common</span><br><span class="line">    php72w-devel php72w-embedded php72w-gd php72w-mbstring</span><br><span class="line">    php72w-mysqlnd php72w-opcache php72w-pdo php72w-xml</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动php-fpm"><a href="#启动php-fpm" class="headerlink" title="启动php-fpm"></a>启动php-fpm</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">systemctl start php-fpm</span></span><br></pre></td></tr></table></figure>
+
+<p>查看PHP版本，出现如下图提示，说明PHP已安装成功。可输入php -m命令，查看PHP已安装模块。</p>
+<p><img src="/png/web/php-v.png" alt="."></p>
+<h2 id="配置nginx"><a href="#配置nginx" class="headerlink" title="配置nginx"></a>配置nginx</h2><p>切换到文件夹”/etc/nginx/conf.d/“，编辑文件default.conf。<br>取消”location ~ .php”的注释，并修改root和fastcgi_param的值，具体如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">... ...</span><br><span class="line">location ~ \.php$ &#123;</span><br><span class="line">    root           /usr/share/nginx/html;</span><br><span class="line">    fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">    fastcgi_index  index.php;</span><br><span class="line">    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;</span><br><span class="line">    include        fastcgi_params;</span><br><span class="line">&#125;</span><br><span class="line">... ...</span><br></pre></td></tr></table></figure>
+
+<p>运行命令”nginx -s reload”，重新启动nginx。</p>
+<p>切换至文件夹”/usr/share/nginx/html/“，创建文件info.php，内容如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">phpinfo();</span><br></pre></td></tr></table></figure>
+
+<p>打开浏览器，输入该ngxin服务器的IP地址，可以看到熟悉的PHPInfo页面：</p>
+<p><img src="/png/web/phpinfo.png" alt="."></p>
+<h2 id="设置开机启动"><a href="#设置开机启动" class="headerlink" title="设置开机启动"></a>设置开机启动</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">systemctl <span class="built_in">enable</span> nginx</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl daemon-reload</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl <span class="built_in">enable</span> mariadb  </span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl daemon-reload        // webtatic版本</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl <span class="built_in">enable</span> php-fpm       // remi版本</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl <span class="built_in">enable</span> php72-php-fpm</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl daemon-reload</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="服务启动、停止、状态查看"><a href="#服务启动、停止、状态查看" class="headerlink" title="服务启动、停止、状态查看"></a>服务启动、停止、状态查看</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 开启服务</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl start nginx</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl start mariadb  </span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl start php-fpm                // webtatic版本</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl start php72-php-fpm          // remi版本</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 停止服务</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl stop nginx</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl stop mariadb  </span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl stop php-fpm                 // webtatic版本</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl stop php72-php-fpm           // remi版本</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 查看状态</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl status nginx</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl status mariadb  </span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl status php-fpm               // webtatic版本</span></span><br><span class="line"><span class="meta">#</span><span class="bash">systemctl status php72-php-fpm         // remi版本</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h2><ol>
+<li>“File not found”错误<br>请检查”/etc/nginx/conf.d/default.conf”文件中，root值是否修改正确，再检查fastcgi_param值是否已按要求修改;</li>
+<li>“无法访问此网站”错误<br>请检查CentOS防火墙80端口是否已设置为允许访问;</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">配置防火墙，允许80，3306端口远程访问</span></span><br><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent</span><br><span class="line">firewall-cmd --zone=public --add-port=3306/tcp --permanent</span><br><span class="line">firewall-cmd --reload  # 重启防火墙</span><br></pre></td></tr></table></figure>
+
+<h2 id="常用路径"><a href="#常用路径" class="headerlink" title="常用路径"></a>常用路径</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> nginx 配置文件</span></span><br><span class="line">/etc/nginx/nginx.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> nginx 默认项目路径</span></span><br><span class="line">/usr/share/nginx/html</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>1、可供CentOS使用的软件库<br><a href="https://wiki.centos.org/zh/AdditionalResources/Repositories" target="_blank" rel="noopener">https://wiki.centos.org/zh/AdditionalResources/Repositories</a></p>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="https://ddao.wang/2019/12/23/web/lnmp_setup/" data-id="ckcd56az5000uxkxhcate0elq" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "ddao"
+        },
+        "headline": "CentOS7下快速搭建LNMP环境",
+        "image": "https://ddao.wang/png/web/lnmp.jpg",
+        "keywords": "LNMP -PHP",
+        "genre": "软件开发 软件部署",
+        "datePublished": "2019-12-23",
+        "dateCreated": "2019-12-23",
+        "dateModified": "2020-07-08",
+        "url": "https://ddao.wang/2019/12/23/web/lnmp_setup/",
+        "description": "LNMP：Linux+Nginx+MySql+PHP
+安装NginxNginx的正确读法应该是Engine X。详细请参考我的另一篇文章: CentOS下使用yum安装Nginx。安装成功后，启动nginx应该就可以看到熟悉的欢迎界面.
+1234#rpm -ivh http://nginx.org/packages/centos/7/noarch/RPMS/          nginx-rele",
+        "wordCount": 650
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript>
+    </div>
+
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="stack-overflow" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-stack-overflow"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/fjddao" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2019/12/23/web/mariadb_setup/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            CentOS下使用yum安装MariaDB
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2019/02/24/web/php_setup/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">VS Code配置PHP开发环境的方法</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/linux/nginx_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/linux/nginx.jpg)" alt="CentOS下使用yum安装Nginx" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/linux/nginx_setup/" class="title">CentOS下使用yum安装Nginx</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T14:36:22.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/linux/custom_yum/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/linux/yum_01.jpg)" alt="CentOS 7搭建本地yum源" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/linux/custom_yum/" class="title">CentOS 7搭建本地yum源</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T11:26:05.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/07/07/windows/rdpclip/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/windows/windows10-laptop.png)" alt="Windows远程桌面(mstsc)不能复制粘贴的解决办法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2020/07/07/windows/rdpclip/" class="title">Windows远程桌面(mstsc)不能复制粘贴的解决办法</a></p>
+                            <p class="item-date"><time datetime="2020-07-07T11:17:18.000Z" itemprop="datePublished">2020-07-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/12/23/windows/c_cpp_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/windows/msys2.png)" alt="Win7下搭建C++ 编译环境(MSYS2+VSCode)" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2019/12/23/windows/c_cpp_setup/" class="title">Win7下搭建C++ 编译环境(MSYS2+VSCode)</a></p>
+                            <p class="item-date"><time datetime="2019-12-23T15:49:20.000Z" itemprop="datePublished">2019-12-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/12/23/web/mariadb_setup/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/png/web/Michael_Widenius.jpg)" alt="CentOS下使用yum安装MariaDB" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><i class="icon fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a></p>
+                            <p class="item-title"><a href="/2019/12/23/web/mariadb_setup/" class="title">CentOS下使用yum安装MariaDB</a></p>
+                            <p class="item-date"><time datetime="2019-12-23T15:47:29.000Z" itemprop="datePublished">2019-12-23</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/">无线电</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">开发环境</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A0%E7%BA%BF%E7%94%B5/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/">软件开发</a><span class="category-list-count">11</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81/">新闻动态</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/%E8%BD%AF%E4%BB%B6%E9%83%A8%E7%BD%B2/">软件部署</a><span class="category-list-count">7</span></li></ul></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">3</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">-PHP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-Cpp/" rel="tag">C/Cpp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cmake/" rel="tag">Cmake</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GitHub/" rel="tag">GitHub</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HackRF/" rel="tag">HackRF</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LNMP/" rel="tag">LNMP</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MariaDB/" rel="tag">MariaDB</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PHP/" rel="tag">PHP</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ubuntu/" rel="tag">Ubuntu</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VS-Code/" rel="tag">VS Code</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/VSCode/" rel="tag">VSCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Windows/" rel="tag">Windows</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/" rel="tag">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/yum/" rel="tag">yum</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%B5%E5%8F%B0%E6%89%A7%E7%85%A7/" rel="tag">电台执照</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/" rel="tag">系统维护</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/PHP/" style="font-size: 10px;">-PHP</a> <a href="/tags/C-Cpp/" style="font-size: 10px;">C/Cpp</a> <a href="/tags/CentOS/" style="font-size: 10px;">CentOS</a> <a href="/tags/Cmake/" style="font-size: 10px;">Cmake</a> <a href="/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/tags/HackRF/" style="font-size: 10px;">HackRF</a> <a href="/tags/LNMP/" style="font-size: 10px;">LNMP</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MariaDB/" style="font-size: 10px;">MariaDB</a> <a href="/tags/PHP/" style="font-size: 20px;">PHP</a> <a href="/tags/Ubuntu/" style="font-size: 10px;">Ubuntu</a> <a href="/tags/VS-Code/" style="font-size: 20px;">VS Code</a> <a href="/tags/VSCode/" style="font-size: 10px;">VSCode</a> <a href="/tags/Windows/" style="font-size: 10px;">Windows</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/%E7%94%B5%E5%8F%B0%E6%89%A7%E7%85%A7/" style="font-size: 10px;">电台执照</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E7%BB%B4%E6%8A%A4/" style="font-size: 10px;">系统维护</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io" target="_blank" rel="noopener">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 ddao</p>
+                
+                <p>Powered by  <a href="https://fhit.cn" target="_blank">烽火信息科技</a>. Thank for Github Hexo Hueman</p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+    
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'https://ddao.wang/2019/12/23/web/lnmp_setup/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+</body>
+</html>
